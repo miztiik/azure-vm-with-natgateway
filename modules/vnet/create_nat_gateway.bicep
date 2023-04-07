@@ -31,33 +31,6 @@ resource r_publicIPPrefix 'Microsoft.Network/publicIPPrefixes@2021-02-01' = {
   }
 }
 
-resource r_nic_01 'Microsoft.Network/networkInterfaces@2022-05-01' = {
-  name: '${vmName}-Nic-01'
-  location: deploymentParams.location
-  tags: tags
-  properties: {
-    ipConfigurations: [
-      { 
-        name: 'ipconfig1'
-        properties: {
-          subnet: {
-            id: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, vmParams.vmSubnetName)
-          }
-          privateIPAllocationMethod: 'Dynamic'
-          publicIPAddress: {
-            id: r_publicIp.id
-          }
-        }
-      }
-    ]
-    networkSecurityGroup: {
-      id: r_webSg.id
-    }
-  }
-}
-
-
-
 resource r_natGateway 'Microsoft.Network/natGateways@2021-02-01' = {
   name: '${natGwParams.natGwNamePrefix}_NatGw_${deploymentParams.global_uniqueness}'
   location: deploymentParams.location
